@@ -1,3 +1,9 @@
+
+*~
+*.swp
+Gemfile.lock
+
+
 *.gem
 *.rbc
 /.config
