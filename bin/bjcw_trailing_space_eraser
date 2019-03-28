@@ -2,3 +2,8 @@
 
 require 'recls'
 
+Recls.file_search('.', "*.rb", Recls::RECURSIVE).each do |fe|
+
+  puts fe.path
+end
+
