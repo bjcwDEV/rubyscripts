@@ -5,5 +5,17 @@ require 'recls'
 Recls.file_search('.', "*.rb", Recls::RECURSIVE).each do |fe|
 
   puts fe.path
+
+
+  lines = IO.readlines fe.path
+  lines.each_with_index do |line, index|
+
+    line = line.chomp
+
+    if line =~ /\s$/
+
+      puts "#{index}: [#{line}]"
+    end
+  end
 end
 
