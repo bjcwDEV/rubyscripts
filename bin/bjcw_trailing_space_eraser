@@ -4,9 +4,6 @@ require 'recls'
 
 Recls.file_search('.', "*.rb", Recls::RECURSIVE).each do |fe|
 
-  puts fe.path
-
-
   lines = IO.readlines fe.path
   lines.each_with_index do |line, index|
 
@@ -14,7 +11,7 @@ Recls.file_search('.', "*.rb", Recls::RECURSIVE).each do |fe|
 
     if line =~ /\s$/
 
-      puts "#{index}: [#{line}]"
+      puts "#{fe.search_relative_path}:#{index + 1}: [#{line}]"
     end
   end
 end
