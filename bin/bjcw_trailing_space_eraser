@@ -1,18 +1,49 @@
 #! /usr/bin/ruby
 
+require 'libclimate'
 require 'recls'
+require 'xqsr3/extensions/io'
+
+options = {}
+climate = LibCLImate::Climate.new do |cl|
+
+  cl.add_flag('--fix', alias: '-f', help: 'changing the defective files') do
+
+    options[:fix] = true
+  end
+
+  cl.version = [ 0, 0, 1 ]
+end
+
+r = climate.run ARGV
 
 Recls.file_search('.', "*.rb", Recls::RECURSIVE).each do |fe|
 
+  changed = false
+  new_lines = []
   lines = IO.readlines fe.path
   lines.each_with_index do |line, index|
 
     line = line.chomp
 
-    if line =~ /\s$/
+    if line =~ /\s+$/
 
       puts "#{fe.search_relative_path}:#{index + 1}: [#{line}]"
+
+      new_lines << $`
+      changed = true
+    else
+
+      new_lines << line
     end
   end
+
+  if changed && options[:fix]
+
+    puts "fixed file #{fe.search_relative_path}"
+
+    IO.writelines fe.path, new_lines
+  end
+
 end
 
